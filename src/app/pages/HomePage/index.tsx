@@ -33,6 +33,10 @@ const TodoCheck = styled.input`
 `;
 
 export function HomePage() {
+  const [todoList, setTodoList] = React.useState<ITodoItem[]>([
+    { id: '1', completed: false, content: '투두입니다 1', editing: false },
+    { id: '1', completed: false, content: '투두입니다 1', editing: false },
+  ]);
   return (
     <>
       <Helmet>
@@ -42,22 +46,19 @@ export function HomePage() {
       <Wrapper>
         <Box>
           <Tittle>할 일</Tittle>
-          <TodoInput />
+          <TodoInput
+            setTodoList={(todo: ITodoItem) => setTodoList([todo, ...todoList])}
+          />
           <TodoList>
+            {todoList.map(todo => (
+              <TodoItem todo={todo} />
+            ))}
             <TodoItem
               todo={{
                 id: '1',
                 completed: false,
                 content: '투두입니다 1',
                 editing: false,
-              }}
-            ></TodoItem>
-            <TodoItem
-              todo={{
-                id: '2',
-                completed: true,
-                content: '투두입니다 2',
-                editing: true,
               }}
             ></TodoItem>
           </TodoList>
