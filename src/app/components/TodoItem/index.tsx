@@ -69,7 +69,6 @@ export default function TodoItem({
             {todo.content}
           </TodoContent>
         )}
-        <TodoContent checked={todo.completed}>{todo.content}</TodoContent>
       </div>
       <CircleButton
         className="delete-button"
