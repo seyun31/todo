@@ -20,15 +20,15 @@ const Circle = styled.div`
 export default function CircleButton({
   className,
   onClick,
-  Icon,
+  imageSrc,
 }: {
   className?: string;
   onClick: () => void;
-  Icon: () => JSX.Element;
+  imageSrc: string;
 }) {
   return (
-    <Circle onClick={onClick} className={className}>
-      <Icon />
-    </Circle>
+    <button className={className} onClick={onClick}>
+      <img src={imageSrc} alt="Button Icon" height="24px" width="24px" />
+    </button>
   );
 }
