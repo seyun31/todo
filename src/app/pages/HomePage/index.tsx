@@ -4,6 +4,9 @@ import styled from 'styled-components';
 
 import TodoInput from 'app/components/TodoInput';
 import TodoItem from 'app/components/TodoItem';
+import { TodoListSelector } from 'store/todo/selectors';
+import { useTodoSlice } from 'store/todo';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -19,6 +22,7 @@ const Box = styled.div`
   height: 600px;
   background: white;
   box-shadow: 0px 25px 100px -60px rgba(0, 0, 0, 0.18);
+  border-radius: 15px;
 `;
 
 const Tittle = styled.h1`
@@ -33,10 +37,9 @@ const TodoCheck = styled.input`
 `;
 
 export function HomePage() {
-  const [todoList, setTodoList] = React.useState<ITodoItem[]>([
-    { id: '1', completed: false, content: '투두입니다 1', editing: false },
-    { id: '1', completed: false, content: '투두입니다 1', editing: false },
-  ]);
+  const { TodoActions } = useTodoSlice();
+  const todoList = useSelector(TodoListSelector);
+  const dispatch = useDispatch();
   return (
     <>
       <Helmet>
@@ -47,20 +50,30 @@ export function HomePage() {
         <Box>
           <Tittle>할 일</Tittle>
           <TodoInput
-            setTodoList={(todo: ITodoItem) => setTodoList([todo, ...todoList])}
+            addTodo={(content: string) =>
+              dispatch(TodoActions.addTodo(content))
+            }
           />
           <TodoList>
             {todoList.map(todo => (
-              <TodoItem todo={todo} />
+              <TodoItem
+                todo={todo}
+                checkTodo={() =>
+                  dispatch(TodoActions.checkTodo({ id: todo.id }))
+                }
+                editModeTodo={() =>
+                  dispatch(TodoActions.editModeTodo({ id: todo.id }))
+                }
+                editTodo={(content: string) =>
+                  dispatch(
+                    TodoActions.editTodo({ id: todo.id, content: content }),
+                  )
+                }
+                deleteTodo={() =>
+                  dispatch(TodoActions.deleteTodo({ id: todo.id }))
+                }
+              />
             ))}
-            <TodoItem
-              todo={{
-                id: '1',
-                completed: false,
-                content: '투두입니다 1',
-                editing: false,
-              }}
-            ></TodoItem>
           </TodoList>
         </Box>
       </Wrapper>
